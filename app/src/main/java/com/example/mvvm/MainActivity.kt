@@ -67,16 +67,38 @@ fun CounterApp(viewModel: CounterViewModel) {
     }
 }
 
-class CounterViewModel : ViewModel() {
-    private val _count = mutableStateOf(0)
+class CounterViewModel() : ViewModel() {
+    private val _repository: CounterRepository = CounterRepository()
+
+    private val _count = mutableStateOf(_repository.getCounter.count)
 
     val count: MutableState<Int> = _count
 
     fun increment() {
-        _count.value++
+        _repository.Incrementcounter()
+        _count.value = _repository.getCounter.count
     }
 
     fun decrement() {
-        _count.value--
+        _repository.Decrementcounter()
+        _count.value = _repository.getCounter.count
     }
+}
+
+
+data class CounterModel(var count: Int)
+
+class CounterRepository{
+    private var _counter = CounterModel(0)
+
+    var getCounter = _counter
+
+    fun Incrementcounter(){
+        _counter.count++
+    }
+
+    fun Decrementcounter(){
+        _counter.count--
+    }
+
 }
